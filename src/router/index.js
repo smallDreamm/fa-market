@@ -1,27 +1,80 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Router from 'vue-router'
+// import Home from './views/Home.vue'
+// import Category from './views/Category.vue'
+// import Cart from './views/Cart.vue'
+// import Profile from './views/Profile.vue'
+let Home = ()=> import('../views/Home.vue');
+let Category = ()=> import('../views/Category.vue');
+let Cart = ()=> import('../views/Cart.vue');
+let Profile = ()=> import('../views/Profile.vue');
 
-Vue.use(VueRouter)
+import Search from '../views/Search.vue'
+import Detail from '../views/Detail.vue'
+import FooterBar from '../components/FooterBar.vue'
+import Error from '../views/Error.vue'
 
-const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
+Vue.use(Router)
 
-const router = new VueRouter({
-  routes
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'home',
+      // component: Home
+      components: {
+        default: Home,
+        'footer-bar': FooterBar
+      },
+      meta:{
+        keepAlive: true
+      }
+    }, {
+      path: '/category',
+      name: 'category',
+      // component: Category
+      components: {
+        default: Category,
+        'footer-bar': FooterBar
+      }, 
+      meta:{
+        keepAlive: true
+      }
+    }, {
+      path: '/cart',
+      name: 'cart',
+      // component: Cart
+      components: {
+        default: Cart,
+        'footer-bar': FooterBar
+      }
+    }, {
+      path: '/profile',
+      name: 'profile',
+      component: Profile,
+      components: {
+        default: Profile,
+        'footer-bar': FooterBar
+      },
+      meta:{
+        keepAlive: false
+      }
+    }, {
+      path: '/search',
+      name: 'search',
+      // component: Search
+      components: {
+        default: Search,
+        'footer-bar': FooterBar
+      },
+    }, {
+      path: '/detail/:id',
+      name: 'detail',
+      component: Detail
+    }, 
+    {
+      path: '*',
+      component: Error
+    }
+  ]
 })
-
-export default router
